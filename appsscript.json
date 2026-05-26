@@ -5,7 +5,7 @@
   "runtimeVersion": "V8",
   "addOns": {
     "common": {
-      "name": "Findiy - Your AI Assistant for Gmail",
+      "name": "Findiy - Your Gmail AI Assistant",
       "logoUrl": "https://res.cloudinary.com/dwbgkof9w/image/upload/v1779779929/findiy_wermnl.png"
     },
     "gmail": {

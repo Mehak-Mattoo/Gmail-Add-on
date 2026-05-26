@@ -7,6 +7,8 @@ const THEME = {
     danger:    "#FE566B",  // red     — destructive actions
     neutral:   "#F0ECE5",  // grey    — secondary actions
     dark:      "#19213D",  // near black — headers
+
+    
   },
   icons: {
     logo:      "https://res.cloudinary.com/dwbgkof9w/image/upload/v1779779929/findiy_wermnl.png",
@@ -20,41 +22,6 @@ const THEME = {
   }
 };
 
-// ─── REUSABLE BUTTON BUILDERS ────────────────────────────
-
-function primaryButton(label, functionName, params) {
-  const btn = CardService.newTextButton()
-    .setText(label)
-    .setBackgroundColor(THEME.colors.primary)
-    .setOnClickAction(
-      CardService.newAction()
-        .setFunctionName(functionName)
-        .setParameters(params || {})
-    );
-  return btn;
-}
-
-function successButton(label, functionName, params) {
-  return CardService.newTextButton()
-    .setText(label)
-    .setBackgroundColor(THEME.colors.success)
-    .setOnClickAction(
-      CardService.newAction()
-        .setFunctionName(functionName)
-        .setParameters(params || {})
-    );
-}
-
-function neutralButton(label, functionName, params) {
-  return CardService.newTextButton()
-    .setText(label)
-    .setBackgroundColor(THEME.colors.neutral)
-    .setOnClickAction(
-      CardService.newAction()
-        .setFunctionName(functionName)
-        .setParameters(params || {})
-    );
-}
 
 // ─── REUSABLE HEADER BUILDER ─────────────────────────────
 
@@ -62,7 +29,6 @@ function appHeader(subtitle) {
   return CardService.newCardHeader()
     .setTitle(THEME.text.appName)
     .setSubtitle(subtitle || THEME.text.tagline)
-    .setImageUrl(THEME.icons.logo)
     .setImageStyle(CardService.ImageStyle.CIRCLE);
 }
 

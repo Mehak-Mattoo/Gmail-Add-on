@@ -2,21 +2,21 @@ function onGmailMessage(e) {
   const thread = GmailApp.getThreadById(e.gmail.threadId);
   const messages = thread.getMessages();
   const lastMessage = messages[messages.length - 1];
-  const subject = lastMessage.getSubject() || "No subject";
-  const body = lastMessage.getPlainBody().substring(0, 300);
+  const subject = lastMessage.getSubject;
 
   return CardService.newCardBuilder()
-    .setHeader(appHeader(subject))
+    .setHeader(subject)
     .addSection(
       CardService.newCardSection()
         .setHeader("Email Preview")
         .addWidget(CardService.newTextParagraph().setText(body))
         .addWidget(divider())
-        .addWidget(primaryButton(
-          "✨ Generate Draft Reply",
-          "onGenerateClicked",
-          { subject: subject, body: body }
-        ))
+        .addWidget(
+          primaryButton("Generate Draft Reply", "onGenerateClicked", {
+            subject: subject,
+            body: body,
+          }),
+        ),
     )
     .build();
 }
@@ -27,13 +27,15 @@ function onGenerateClicked(e) {
 
   const generatedDraft =
     "Hi,\n\n" +
-    "Thank you for reaching out regarding \"" + subject + "\".\n\n" +
+    'Thank you for reaching out regarding "' +
+    subject +
+    '".\n\n' +
     "I have reviewed your message and will follow up shortly.\n\n" +
     "Best regards";
 
   return CardService.newActionResponseBuilder()
     .setNavigation(
-      CardService.newNavigation().pushCard(buildDraftCard(generatedDraft))
+      CardService.newNavigation().pushCard(buildDraftCard(generatedDraft)),
     )
     .build();
 }
@@ -45,16 +47,11 @@ function buildDraftCard(draftText) {
       CardService.newCardSection()
         .addWidget(CardService.newTextParagraph().setText(draftText))
         .addWidget(divider())
-        .addWidget(successButton(
-          "📩 Insert as Reply",
-          "onInsertClicked",
-          { draft: draftText }
-        ))
-        .addWidget(neutralButton(
-          "← Back",
-          "onBack",
-          {}
-        ))
+        .addWidget(
+          successButton("Insert as Reply", "onInsertClicked", {
+            draft: draftText,
+          }),
+        ),
     )
     .build();
 }
@@ -65,15 +62,6 @@ function onInsertClicked(e) {
   message.getThread().createDraftReply(draft);
 
   return CardService.newActionResponseBuilder()
-    .setNotification(
-      CardService.newNotification()
-        .setText("✅ Draft saved to Gmail Drafts!")
-    )
-    .build();
-}
-
-function onBack() {
-  return CardService.newActionResponseBuilder()
-    .setNavigation(CardService.newNavigation().popCard())
+    .setNotification(CardService.newNotification().setText("Draft saved!"))
     .build();
 }

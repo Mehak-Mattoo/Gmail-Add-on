@@ -1,6 +1,7 @@
 {
   "scriptId": "1bSE4w5sSbOZRCz4KZ7BRinWoM1I1JTWds9ILVNfBhiOU_6lTg0Nnf6dl",
   "rootDir": ".",
+  
   "scriptExtensions": [
     ".js",
     ".gs"
@@ -11,6 +12,6 @@
   "jsonExtensions": [
     ".json"
   ],
-  "filePushOrder": [],
+  "filePushOrder": ["Theme.js", "Code.js","buttons/button.gs"],
   "skipSubdirectories": false
 }
