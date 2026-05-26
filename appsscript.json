@@ -5,7 +5,7 @@
   "runtimeVersion": "V8",
   "addOns": {
     "common": {
-      "name": "Gmail Draft Generator",
+      "name": "Findiy Draft Generator",
       "logoUrl": "https://res.cloudinary.com/dwbgkof9w/image/upload/v1779779929/findiy_wermnl.png"
     },
     "gmail": {
