@@ -5,7 +5,7 @@
   "runtimeVersion": "V8",
   "addOns": {
     "common": {
-      "name": "Findiy Draft Generator",
+      "name": "Findiy - Your AI Assistant for Gmail",
       "logoUrl": "https://res.cloudinary.com/dwbgkof9w/image/upload/v1779779929/findiy_wermnl.png"
     },
     "gmail": {
