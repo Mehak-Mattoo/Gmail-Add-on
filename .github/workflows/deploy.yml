@@ -11,12 +11,12 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '20'
 
       - name: Install clasp
         run: npm install -g @google/clasp
@@ -26,7 +26,31 @@ jobs:
           CLASPRC_JSON: ${{ secrets.CLASPRC_JSON }}
         run: |
           mkdir -p "$HOME"
-          printf '%s' "$CLASPRC_JSON" > "$HOME/.clasprc.json"
+          node -e "
+            const raw = process.env.CLASPRC_JSON;
+            const j = JSON.parse(raw);
+            const token = j.tokens && j.tokens.default ? j.tokens.default : j;
+            const flat = {
+              token: {
+                access_token: token.access_token,
+                refresh_token: token.refresh_token,
+                token_type: token.token_type || 'Bearer',
+                expiry_date: token.expiry_date || Date.now() + 3600000,
+                id_token: token.id_token || ''
+              },
+              oauth2ClientSettings: {
+                clientId: token.client_id,
+                clientSecret: token.client_secret,
+                redirectUri: 'http://localhost'
+              },
+              isLocalCreds: false
+            };
+            require('fs').writeFileSync(
+              process.env.HOME + '/.clasprc.json',
+              JSON.stringify(flat, null, 2)
+            );
+            console.log('Credentials written successfully');
+          "
 
       - name: Validate clasp credentials
         run: |
@@ -34,9 +58,9 @@ jobs:
             const fs = require('fs');
             const raw = fs.readFileSync(process.env.HOME + '/.clasprc.json', 'utf8');
             const j = JSON.parse(raw);
-            const token = j.tokens && j.tokens.default;
-            if (!token || !token.refresh_token) {
-              console.error('No refresh_token found in CLASPRC_JSON');
+            console.log('Top level keys:', Object.keys(j));
+            if (!j.token || !j.token.refresh_token) {
+              console.error('No refresh_token found');
               process.exit(1);
             }
             console.log('CLASPRC_JSON OK');
