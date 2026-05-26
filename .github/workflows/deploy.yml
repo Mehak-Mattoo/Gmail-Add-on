@@ -30,7 +30,17 @@ jobs:
 
       - name: Validate clasp credentials
         run: |
-          node -e "const fs=require('fs'); const p=process.env.HOME+'/.clasprc.json'; const s=fs.readFileSync(p,'utf8'); const j=JSON.parse(s); if(!j.token && !j.tokens){console.error('Missing token/tokens in CLASPRC_JSON'); process.exit(1);} let t=j.token||j.tokens; if(Array.isArray(t)) t=t[0]; if(!(t.access_token||t.refresh_token)){console.error('Missing access_token/refresh_token'); process.exit(1);} console.log('CLASPRC_JSON OK')"
+          node -e "
+            const fs = require('fs');
+            const raw = fs.readFileSync(process.env.HOME + '/.clasprc.json', 'utf8');
+            const j = JSON.parse(raw);
+            const token = j.tokens && j.tokens.default;
+            if (!token || !token.refresh_token) {
+              console.error('No refresh_token found in CLASPRC_JSON');
+              process.exit(1);
+            }
+            console.log('CLASPRC_JSON OK');
+          "
 
       - name: Push to Apps Script
         run: clasp push --force
