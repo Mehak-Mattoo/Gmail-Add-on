@@ -5,7 +5,7 @@
   "scriptExtensions": [".js", ".gs"],
   "htmlExtensions": [".html"],
   "jsonExtensions": [".json"],
-  "filePushOrder": ["Theme.js", "Code.js", "buttons/button.gs"],
+  "filePushOrder": ["Theme.gs", "Code.gs", "buttons/button.gs"],
   "skipSubdirectories": false,
   "fileExtension": "js"
 }
